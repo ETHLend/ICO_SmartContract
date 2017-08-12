@@ -10,7 +10,7 @@ var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETH_NODE));
 
 function getContractAbi(contractName,cb){
-     var file = './contracts/SquarEx.sol';
+     var file = './contracts/EthLendICO.sol';
 
      fs.readFile(file, function(err, result){
           assert.equal(err,null);
@@ -38,13 +38,10 @@ web3.eth.getAccounts(function(err, as) {
           return;
      }
 
-     console.log('Acccounts: ');
-     console.log(as);
-
      // 2 - read ABI
-     var contractName = ':PresaleToken';
+     var contractName = ':EthLendToken';
      getContractAbi(contractName,function(err,abi,bytecode,abiJson){
-          fs.writeFileSync('abi.out',abi);
+          fs.writeFileSync('abi.out',abiJson);
           console.log('Wrote ABI to file: abi.out');
 
           //deployMain(creator,abi,bytecode);
@@ -54,12 +51,15 @@ web3.eth.getAccounts(function(err, as) {
 function deployMain(creator,abi,bytecode){
      var tempContract = web3.eth.contract(abi);
 
+     // TODO: set these parameters!
      var tokenManager = 0;
      var escrow = 0;
+     var teamBonus = 0;
 
      tempContract.new(
           tokenManager,
           escrow,
+          teamBonus,
           {
                from: creator, 
                gas: 4995000,
