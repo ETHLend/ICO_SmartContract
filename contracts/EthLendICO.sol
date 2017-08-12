@@ -152,6 +152,7 @@ contract EthLendToken is StdToken
     }
 
     State public currentState = State.Init;
+    bool public enableTransfers = false;
 
     address public teamTokenBonus = 0;
 
@@ -260,6 +261,10 @@ contract EthLendToken is StdToken
 
         currentState = _nextState;
         LogStateSwitch(_nextState);
+
+        // enable/disable transfers
+        enableTransfers = 
+          (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
     }
 
     function withdrawEther() public onlyTokenManager
@@ -268,6 +273,28 @@ contract EthLendToken is StdToken
         {
             if(!escrow.send(this.balance)) throw;
         }
+    }
+
+/// Overrides:
+    function transfer(address _to, uint256 _value) {
+        if(!enableTransfers){
+            throw;
+        }
+        super.transfer(_to,_value);
+    }
+
+    function transferFrom(address _from, address _to, uint256 _value) {
+        if(!enableTransfers){
+            throw;
+        }
+        super.transferFrom(_from,_to,_value);
+    }
+
+    function approve(address _spender, uint256 _value) returns (bool) {
+        if(!enableTransfers){
+            throw;
+        }
+        return super.approve(_spender,_value);
     }
 
 /// Setters/getters
