@@ -174,7 +174,6 @@ contract EthLendToken is StdToken
 /// Events:
     event LogBuy(address indexed owner, uint value);
     event LogBurn(address indexed owner, uint value);
-    event LogStateSwitch(State newState);
 
 /// Functions:
     /// @dev Constructor
@@ -240,31 +239,28 @@ contract EthLendToken is StdToken
         LogBuy(_buyer, newTokens);
     }
 
+    function getPrice()constant returns(uint)
+    {
+        if(currentState==State.ICORunning){
+             if(icoSoldTokens<(200000000 * (1 ether / 1 wei))){
+                  return ICO_PRICE1;
+             }
+             
+             if(icoSoldTokens<(300000000 * (1 ether / 1 wei))){
+                  return ICO_PRICE2;
+             }
+
+             return ICO_PRICE3;
+        }else{
+             return PRESALE_PRICE;
+        }
+    }
+
     function setState(State _nextState) public onlyTokenManager
     {
-        bool canSwitchState
-             =  (currentState == State.Init && _nextState == State.PresaleRunning)
-             || (currentState == State.PresaleRunning && _nextState == State.Paused)
-             || (currentState == State.Paused && _nextState == State.PresaleRunning)
-             || (currentState == State.PresaleRunning && _nextState == State.PresaleFinished)
-             || (currentState == State.PresaleFinished && _nextState == State.PresaleRunning)
-
-             || (currentState == State.PresaleFinished && _nextState == State.ICORunning)
-
-             || (currentState == State.ICORunning && _nextState == State.Paused)
-             || (currentState == State.Paused && _nextState == State.ICORunning)
-             || (currentState == State.ICORunning && _nextState == State.ICOFinished)
-             || (currentState == State.ICOFinished && _nextState == State.ICORunning)
-        ;
-
-        if(!canSwitchState) throw;
-
         currentState = _nextState;
-        LogStateSwitch(_nextState);
-
         // enable/disable transfers
-        enableTransfers = 
-          (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
+        enableTransfers = (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
     }
 
     function withdrawEther() public onlyTokenManager
@@ -302,39 +298,6 @@ contract EthLendToken is StdToken
     {
         tokenManager = _mgr;
     }
-
-    function getTokenManager()constant returns(address)
-    {
-        return tokenManager;
-    }
-
-    function getCurrentState()constant returns(State)
-    {
-        return currentState;
-    }
-
-    function getPrice()constant returns(uint)
-    {
-        if(currentState==State.ICORunning){
-             if(icoSoldTokens<(200000000 * (1 ether / 1 wei))){
-                  return ICO_PRICE1;
-             }
-             
-             if(icoSoldTokens<(300000000 * (1 ether / 1 wei))){
-                  return ICO_PRICE2;
-             }
-
-             return ICO_PRICE3;
-        }else{
-             return PRESALE_PRICE;
-        }
-    }
-
-    function getTotalSupply()constant returns(uint)
-    {
-        return totalSupply;
-    }
-
 
     // Default fallback function
     function() payable 

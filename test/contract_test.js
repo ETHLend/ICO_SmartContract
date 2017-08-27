@@ -174,7 +174,7 @@ describe('Contracts 0 - Deploy', function() {
      });
 
      it('should get initial state',function(done){
-          var state = contract.getCurrentState();
+          var state = contract.currentState();
           assert.equal(state,0);
           done();
      });
@@ -211,7 +211,7 @@ describe('Contracts 0 - Deploy', function() {
      })
 
      it('should get token manager',function(done){
-          var m = contract.getTokenManager();
+          var m = contract.tokenManager();
           assert.equal(m,creator);
           done();
      });
@@ -237,7 +237,7 @@ describe('Contracts 0 - Deploy', function() {
      })
 
      it('should get updated state',function(done){
-          var state = contract.getCurrentState();
+          var state = contract.currentState();
           assert.equal(state,2);
           done();
      })
@@ -321,7 +321,7 @@ describe('Contracts 0 - Deploy', function() {
                     web3.eth.getTransactionReceipt(result, function(err, r2){
                          assert.equal(err, null);
 
-                         var state = contract.getCurrentState();
+                         var state = contract.currentState();
                          assert.equal(state,1);
 
                          done();
@@ -360,7 +360,7 @@ describe('Contracts 0 - Deploy', function() {
                     web3.eth.getTransactionReceipt(result, function(err, r2){
                          assert.equal(err, null);
 
-                         var state = contract.getCurrentState();
+                         var state = contract.currentState();
                          assert.equal(state,2);
 
                          done();
@@ -385,7 +385,7 @@ describe('Contracts 0 - Deploy', function() {
      });
 
      it('should move to Presale finished state',function(done){
-          var state = contract.getCurrentState();
+          var state = contract.currentState();
           assert.equal(state,2);
 
           contract.setState(
@@ -399,7 +399,7 @@ describe('Contracts 0 - Deploy', function() {
                     web3.eth.getTransactionReceipt(result, function(err, r2){
                          assert.equal(err, null);
 
-                         var state = contract.getCurrentState();
+                         var state = contract.currentState();
                          assert.equal(state,3);
 
                          done();
@@ -415,13 +415,13 @@ describe('Contracts 0 - Deploy', function() {
      })
 
      it('should get totalSupply',function(done){
-          var total = contract.getTotalSupply();
+          var total = contract.totalSupply();
           assert.equal(total / 1000000000000000000,(300000000 + 30000));   
           done();
      })
 
      it('should move to ICO is started state',function(done){
-          var state = contract.getCurrentState();
+          var state = contract.currentState();
           assert.equal(state,3);
 
           contract.setState(
@@ -435,7 +435,7 @@ describe('Contracts 0 - Deploy', function() {
                     web3.eth.getTransactionReceipt(result, function(err, r2){
                          assert.equal(err, null);
 
-                         var state = contract.getCurrentState();
+                         var state = contract.currentState();
                          assert.equal(state,4);
 
                          done();
@@ -474,6 +474,11 @@ describe('Contracts 0 - Deploy', function() {
                          var currentBalance= web3.eth.getBalance(buyer2);
                          var diff = initialBalanceBuyer - currentBalance;
                          var mustBe = 1500000000000000000;
+
+                         // 1500000000000000000
+                         // 0999999999973867500
+                         console.log('MUST BE: ',mustBe.toString(10));
+                         console.log('DIFF: ',diff.toString(10));
 
                          assert.equal(diffWithGas(mustBe,diff),true);
 
