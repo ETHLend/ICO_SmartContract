@@ -20,6 +20,7 @@ var teamBonusAccount;
 var initialBalanceCreator = 0;
 var initialBalanceEscrow = 0;
 var initialBalanceBuyer = 0;
+var initialBalanceBuyer2 = 0;
 
 var contractAddress;
 var contract;
@@ -153,6 +154,7 @@ describe('Contracts 0 - Deploy', function() {
           initialBalanceCreator = web3.eth.getBalance(creator);
           initialBalanceEscrow = web3.eth.getBalance(escrow);
           initialBalanceBuyer = web3.eth.getBalance(buyer);
+          initialBalanceBuyer2 = web3.eth.getBalance(buyer2);
 
           done();
      });
@@ -472,15 +474,9 @@ describe('Contracts 0 - Deploy', function() {
 
                          // 2 - ETHs
                          var currentBalance= web3.eth.getBalance(buyer2);
-                         var diff = initialBalanceBuyer - currentBalance;
-                         var mustBe = 1500000000000000000;
+                         var diff = initialBalanceBuyer2 - currentBalance;
 
-                         // 1500000000000000000
-                         // 0999999999973867500
-                         console.log('MUST BE: ',mustBe.toString(10));
-                         console.log('DIFF: ',diff.toString(10));
-
-                         assert.equal(diffWithGas(mustBe,diff),true);
+                         assert.equal(diffWithGas(amount,diff),true);
 
                          done();
                     });
