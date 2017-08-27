@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.16;
 
 contract SafeMath {
      function safeMul(uint a, uint b) internal returns (uint) {
@@ -17,10 +17,6 @@ contract SafeMath {
           assert(c>=a && c>=b);
           return c;
      }
-
-     function assert(bool assertion) internal {
-          if (!assertion) throw;
-     }
 }
 
 // Standard token interface (ERC 20)
@@ -37,14 +33,14 @@ contract Token is SafeMath {
      /// @notice send `_value` token to `_to` from `msg.sender`
      /// @param _to The address of the recipient
      /// @param _value The amount of token to be transferred
-     function transfer(address _to, uint256 _value) {}
+     function transfer(address _to, uint256 _value) returns(bool){}
 
      /// @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
      /// @param _from The address of the sender
      /// @param _to The address of the recipient
      /// @param _value The amount of token to be transferred
      /// @return Whether the transfer was successful or not
-     function transferFrom(address _from, address _to, uint256 _value){}
+     function transferFrom(address _from, address _to, uint256 _value) returns(bool){}
 
      /// @notice `msg.sender` approves `_addr` to spend `_value` tokens
      /// @param _spender The address of the account able to transfer the tokens
@@ -69,29 +65,28 @@ contract StdToken is Token {
      uint public totalSupply = 0;
 
      // Functions:
-     function transfer(address _to, uint256 _value) {
-          if((balances[msg.sender] < _value) || (balances[_to] + _value <= balances[_to])) {
-               throw;
-          }
+     function transfer(address _to, uint256 _value) returns(bool) {
+          require(balances[msg.sender] >= _value);
+          require(balances[_to] + _value > balances[_to]);
 
-          balances[msg.sender] -= _value;
-          balances[_to] += _value;
+          balances[msg.sender] = safeSub(balances[msg.sender],_value);
+          balances[_to] = safeAdd(balances[_to],_value);
+
           Transfer(msg.sender, _to, _value);
+          return true;
      }
 
-     function transferFrom(address _from, address _to, uint256 _value) {
-          if((balances[_from] < _value) || 
-               (allowed[_from][msg.sender] < _value) || 
-               (balances[_to] + _value <= balances[_to])) 
-          {
-               throw;
-          }
+     function transferFrom(address _from, address _to, uint256 _value) returns(bool){
+          require(balances[_from] >= _value);
+          require(allowed[_from][msg.sender] >= _value);
+          require(balances[_to] + _value > balances[_to]);
 
-          balances[_to] += _value;
-          balances[_from] -= _value;
-          allowed[_from][msg.sender] -= _value;
+          balances[_to] = safeAdd(balances[_to],_value);
+          balances[_from] = safeSub(balances[_from],_value);
+          allowed[_from][msg.sender] = safeSub(allowed[_from][msg.sender],_value);
 
           Transfer(_from, _to, _value);
+          return true;
      }
 
      function balanceOf(address _owner) constant returns (uint256 balance) {
@@ -107,13 +102,6 @@ contract StdToken is Token {
 
      function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
           return allowed[_owner][_spender];
-     }
-
-     modifier onlyPayloadSize(uint _size) {
-          if(msg.data.length < _size + 4) {
-               throw;
-          }
-          _;
      }
 }
 
@@ -168,13 +156,21 @@ contract EthLendToken is StdToken
     uint public totalSoldTokens = 0;
 
 /// Modifiers:
-    modifier onlyTokenManager()     { if(msg.sender != tokenManager) throw; _; }
-    modifier onlyInState(State state){ if(state != currentState) throw; _; }
+    modifier onlyTokenManager()
+    {
+        require(msg.sender==tokenManager); 
+        _; 
+    }
+
+    modifier onlyInState(State state)
+    {
+        require(state==currentState); 
+        _; 
+    }
 
 /// Events:
     event LogBuy(address indexed owner, uint value);
     event LogBurn(address indexed owner, uint value);
-    event LogStateSwitch(State newState);
 
 /// Functions:
     /// @dev Constructor
@@ -196,10 +192,7 @@ contract EthLendToken is StdToken
 
     function buyTokens(address _buyer) public payable
     {
-        if(currentState!=State.PresaleRunning && currentState!=State.ICORunning)
-        {
-            throw;
-        }
+        require(currentState==State.PresaleRunning || currentState==State.ICORunning);
 
         if(currentState==State.PresaleRunning){
             return buyTokensPresale(_buyer);
@@ -211,10 +204,10 @@ contract EthLendToken is StdToken
     function buyTokensPresale(address _buyer) public payable onlyInState(State.PresaleRunning)
     {
         // min - 1 ETH
-        if(msg.value < (1 ether / 1 wei)) throw;
+        require(msg.value >= (1 ether / 1 wei));
         uint newTokens = msg.value * PRESALE_PRICE;
 
-        if(presaleSoldTokens + newTokens > PRESALE_TOKEN_SUPPLY_LIMIT) throw;
+        require(presaleSoldTokens + newTokens <= PRESALE_TOKEN_SUPPLY_LIMIT);
 
         balances[_buyer] += newTokens;
         totalSupply += newTokens;
@@ -227,10 +220,10 @@ contract EthLendToken is StdToken
     function buyTokensICO(address _buyer) public payable onlyInState(State.ICORunning)
     {
         // min - 0.01 ETH
-        if(msg.value < ((1 ether / 1 wei) / 100)) throw;
+        require(msg.value >= ((1 ether / 1 wei) / 100));
         uint newTokens = msg.value * getPrice();
 
-        if(totalSoldTokens + newTokens > TOTAL_SOLD_TOKEN_SUPPLY_LIMIT) throw;
+        require(totalSoldTokens + newTokens <= TOTAL_SOLD_TOKEN_SUPPLY_LIMIT);
 
         balances[_buyer] += newTokens;
         totalSupply += newTokens;
@@ -238,79 +231,6 @@ contract EthLendToken is StdToken
         totalSoldTokens+= newTokens;
 
         LogBuy(_buyer, newTokens);
-    }
-
-    function setState(State _nextState) public onlyTokenManager
-    {
-        bool canSwitchState
-             =  (currentState == State.Init && _nextState == State.PresaleRunning)
-             || (currentState == State.PresaleRunning && _nextState == State.Paused)
-             || (currentState == State.Paused && _nextState == State.PresaleRunning)
-             || (currentState == State.PresaleRunning && _nextState == State.PresaleFinished)
-             || (currentState == State.PresaleFinished && _nextState == State.PresaleRunning)
-
-             || (currentState == State.PresaleFinished && _nextState == State.ICORunning)
-
-             || (currentState == State.ICORunning && _nextState == State.Paused)
-             || (currentState == State.Paused && _nextState == State.ICORunning)
-             || (currentState == State.ICORunning && _nextState == State.ICOFinished)
-             || (currentState == State.ICOFinished && _nextState == State.ICORunning)
-        ;
-
-        if(!canSwitchState) throw;
-
-        currentState = _nextState;
-        LogStateSwitch(_nextState);
-
-        // enable/disable transfers
-        enableTransfers = 
-          (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
-    }
-
-    function withdrawEther() public onlyTokenManager
-    {
-        if(this.balance > 0) 
-        {
-            if(!escrow.send(this.balance)) throw;
-        }
-    }
-
-/// Overrides:
-    function transfer(address _to, uint256 _value) {
-        if(!enableTransfers){
-            throw;
-        }
-        super.transfer(_to,_value);
-    }
-
-    function transferFrom(address _from, address _to, uint256 _value) {
-        if(!enableTransfers){
-            throw;
-        }
-        super.transferFrom(_from,_to,_value);
-    }
-
-    function approve(address _spender, uint256 _value) returns (bool) {
-        if(!enableTransfers){
-            throw;
-        }
-        return super.approve(_spender,_value);
-    }
-
-/// Setters/getters
-    function setTokenManager(address _mgr) public onlyTokenManager
-    {
-        tokenManager = _mgr;
-    }
-
-    function getTokenManager()constant returns(address)
-    {
-        return tokenManager;
-    }
-
-    function getCurrentState()constant returns(State)
-    {
-        return currentState;
     }
 
     function getPrice()constant returns(uint)
@@ -330,11 +250,42 @@ contract EthLendToken is StdToken
         }
     }
 
-    function getTotalSupply()constant returns(uint)
+    function setState(State _nextState) public onlyTokenManager
     {
-        return totalSupply;
+        currentState = _nextState;
+        // enable/disable transfers
+        enableTransfers = (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
     }
 
+    function withdrawEther() public onlyTokenManager
+    {
+        if(this.balance > 0) 
+        {
+            require(escrow.send(this.balance));
+        }
+    }
+
+/// Overrides:
+    function transfer(address _to, uint256 _value) returns(bool){
+        require(enableTransfers);
+        return super.transfer(_to,_value);
+    }
+
+    function transferFrom(address _from, address _to, uint256 _value) returns(bool){
+        require(enableTransfers);
+        return super.transferFrom(_from,_to,_value);
+    }
+
+    function approve(address _spender, uint256 _value) returns (bool) {
+        require(enableTransfers);
+        return super.approve(_spender,_value);
+    }
+
+/// Setters/getters
+    function setTokenManager(address _mgr) public onlyTokenManager
+    {
+        tokenManager = _mgr;
+    }
 
     // Default fallback function
     function() payable 
