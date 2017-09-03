@@ -54,34 +54,52 @@
           var getTotalEth = (cb)=> web3Infura.eth.getBalance(config.address);
 		getTotalEth( (err,res)=>$('.total-eth').html(bigNumberToStrAndDivide(res)) )
 	</script>
+
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 </head>
 <body>
+    <div class="jumbotron" style="background-color: #0066E6" >
+      <div class="container" >
+        <font color="white"><h1 >Welcome to Ethlend ICO</h1></font>
+        <font color="white"><p>Please find all the details for the upcoming initial coin offering</p></font>
+      </div>
+    </div>
 
-<h4> Tokens sold: 
-	<small class="tokens-sold"></small>
-</h4>
-<h4> Tokens Presale total: 
-	<small class="tokens-presale-total"></small>
-</h4>
-<h4> Tokens ICO (+Presale) total: 
-	<small class="tokens-ico-total"></small>
-</h4>
-<h4> Current price: 
-	<small class="token-price" ></small>
-</h4>
-<h4> Total ETH: 
-	<small class="total-eth" ></small>
-</h4>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+			<h3> ICO Details</h3>
+			<h4> Tokens sold: 
+				<small class="tokens-sold"></small>
+			</h4>
+			<h4> Tokens Presale total: 
+				<small class="tokens-presale-total"></small>
+			</h4>
+			<h4> Tokens ICO (+Presale) total: 
+				<small class="tokens-ico-total"></small>
+			</h4>
+			<h4> Current price: 
+				<small class="token-price" ></small>
+			</h4>
+			<h4> Total ETH: 
+				<small class="total-eth" ></small>
+			</h4>
+			<p><a class="btn btn-default" href="#" role="button">link to the white paper (TBC) &raquo;</a></p>
+			<p><a class="btn btn-default" href="#" role="button">link to the dApp (TBC) &raquo;</a></p>
+        </div>
+        <div class="col-md-6">
 
-<input type="string" class="input-balance" style="width:500px; display: inline-block;"/>
-<button class='check-balance' > 
-	Check
-</button>
-
-<h4> Your balance: 
-	<small class="token-balance" ></small>
-</h4>
-
+        <h3> Your Account</h3>
+		<input type="string" class="input-balance" style="width:500px; display: inline-block;"/>
+		<button class='check-balance' > 
+			Check
+		</button>
+		<h4> Your balance: 
+			<small class="token-balance" ></small>
+		</h4>
+       </div>
+      </div>
 </body>
 
 <script type="text/javascript">
