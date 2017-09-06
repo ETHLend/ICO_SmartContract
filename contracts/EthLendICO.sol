@@ -200,18 +200,18 @@ contract EthLendToken is StdToken
         assert(TOTAL_SOLD_TOKEN_SUPPLY_LIMIT==1000000000 * (1 ether / 1 wei));
     }
 
-    function buyTokens(address _buyer) public payable
+    function buyTokens() public payable
     {
         require(currentState==State.PresaleRunning || currentState==State.ICORunning);
 
         if(currentState==State.PresaleRunning){
-            return buyTokensPresale(_buyer);
+            return buyTokensPresale();
         }else{
-            return buyTokensICO(_buyer);
+            return buyTokensICO();
         }
     }
 
-    function buyTokensPresale(address _buyer) public payable onlyInState(State.PresaleRunning)
+    function buyTokensPresale() public payable onlyInState(State.PresaleRunning)
     {
         // min - 1 ETH
         require(msg.value >= (1 ether / 1 wei));
@@ -219,15 +219,15 @@ contract EthLendToken is StdToken
 
         require(presaleSoldTokens + newTokens <= PRESALE_TOKEN_SUPPLY_LIMIT);
 
-        balances[_buyer] += newTokens;
+        balances[msg.sender] += newTokens;
         supply+= newTokens;
         presaleSoldTokens+= newTokens;
         totalSoldTokens+= newTokens;
 
-        LogBuy(_buyer, newTokens);
+        LogBuy(msg.sender, newTokens);
     }
 
-    function buyTokensICO(address _buyer) public payable onlyInState(State.ICORunning)
+    function buyTokensICO() public payable onlyInState(State.ICORunning)
     {
         // min - 0.01 ETH
         require(msg.value >= ((1 ether / 1 wei) / 100));
@@ -235,12 +235,12 @@ contract EthLendToken is StdToken
 
         require(totalSoldTokens + newTokens <= TOTAL_SOLD_TOKEN_SUPPLY_LIMIT);
 
-        balances[_buyer] += newTokens;
+        balances[msg.sender] += newTokens;
         supply+= newTokens;
         icoSoldTokens+= newTokens;
         totalSoldTokens+= newTokens;
 
-        LogBuy(_buyer, newTokens);
+        LogBuy(msg.sender, newTokens);
     }
 
     function getPrice()constant returns(uint)
@@ -300,6 +300,6 @@ contract EthLendToken is StdToken
     // Default fallback function
     function() payable 
     {
-        buyTokens(msg.sender);
+        buyTokens();
     }
 }
