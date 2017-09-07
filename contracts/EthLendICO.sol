@@ -262,6 +262,9 @@ contract EthLendToken is StdToken
 
     function setState(State _nextState) public onlyTokenManager
     {
+        //setState() method call shouldn't be entertained after ICOFinished
+        require(currentState != State.ICOFinished);
+        
         currentState = _nextState;
         // enable/disable transfers
         enableTransfers = (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
