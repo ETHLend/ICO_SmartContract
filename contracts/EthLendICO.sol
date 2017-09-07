@@ -267,7 +267,8 @@ contract EthLendToken is StdToken
         
         currentState = _nextState;
         // enable/disable transfers
-        enableTransfers = (currentState==State.PresaleFinished) || (currentState==State.ICOFinished);
+        //enable transfers only after ICOFinished, disable otherwise
+        enableTransfers = (currentState==State.ICOFinished);
     }
 
     function withdrawEther() public onlyTokenManager
