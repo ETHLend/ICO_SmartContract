@@ -178,6 +178,11 @@ describe('Contracts 0 - Deploy', function() {
      it('should get initial state',function(done){
           var state = contract.currentState();
           assert.equal(state,0);
+
+          //enableTransfer should be false
+          state = contract.enableTransfers();
+          assert.equal(state,0);
+
           done();
      });
 
@@ -237,6 +242,17 @@ describe('Contracts 0 - Deploy', function() {
                }
           );
      })
+
+     it('should be enableTransfer=false in PresaleRunning state',function(done){
+          var state = contract.currentState();
+          assert.equal(state,2);
+
+          //enableTransfer should be false
+          state = contract.enableTransfers();
+          assert.equal(state,0);
+
+          done();
+     });
 
      it('should get updated state',function(done){
           var state = contract.currentState();
@@ -332,6 +348,18 @@ describe('Contracts 0 - Deploy', function() {
           );
      })
 
+     it('should be enableTransfer=false in Paused state',function(done){
+          var state = contract.currentState();
+          assert.equal(state,1);
+
+          //enableTransfer should be false
+          state = contract.enableTransfers();
+          assert.equal(state,0);
+
+          done();
+     });
+
+
      it('should throw if paused',function(done){
           // 1 ETH
           var amount = 1000000000000000000;
@@ -410,6 +438,17 @@ describe('Contracts 0 - Deploy', function() {
           );
      })
 
+     it('should be enableTransfer=false in PresaleFinished state',function(done){
+          var state = contract.currentState();
+          assert.equal(state,3);
+
+          //enableTransfer should be false
+          state = contract.enableTransfers();
+          assert.equal(state,0);
+
+          done();
+     });     
+
      it('should get price',function(done){
           var price = contract.getPrice();
           assert.equal(price,30000);
@@ -445,6 +484,17 @@ describe('Contracts 0 - Deploy', function() {
                }
           );
      })
+
+     it('should be enableTransfer=false in ICORunning state',function(done){
+          var state = contract.currentState();
+          assert.equal(state,4);
+
+          //enableTransfer should be false
+          state = contract.enableTransfers();
+          assert.equal(state,0);
+
+          done();
+     });     
 
      it('should get ICO price',function(done){
           var price = contract.getPrice();
@@ -482,7 +532,64 @@ describe('Contracts 0 - Deploy', function() {
                     });
                }
           );
-     });
+     })
+
+     it('should move to ICOFinished state',function(done){
+          var state = contract.currentState();
+          assert.equal(state,4);
+
+          contract.setState(
+               5,
+               {
+                    from: creator,               
+                    gas: 2900000 
+               },function(err,result){
+                    assert.equal(err,null);
+
+                    web3.eth.getTransactionReceipt(result, function(err, r2){
+                         assert.equal(err, null);
+
+                         var state = contract.currentState();
+                         assert.equal(state,5);
+
+                         done();
+                    });
+               }
+          );
+     })
+
+     it('should be enableTransfer=true in ICOFinished state',function(done){
+          var state = contract.currentState();
+          assert.equal(state,5);
+
+          //enableTransfer should be false
+          state = contract.enableTransfers();
+          assert.equal(state,1);
+
+          done();
+     });  
+
+     it('should not be able to change any state after ICOFinished',function(done){
+          var state = contract.currentState();
+          assert.equal(state,5); 
+
+          //Trying to set Paused
+          contract.setState(
+               1,
+               {
+                    from: creator,               
+                    gas: 2900000 
+               },function(err,result){
+                    assert.notEqual(err,null);
+
+                    var state = contract.currentState();
+                    assert.equal(state,5);
+
+                    done();
+               }
+          );
+     })
+     ;
 });
 
 
