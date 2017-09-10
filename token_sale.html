@@ -53,18 +53,170 @@
           ///
           var getTotalEth = (cb)=> web3Infura.eth.getBalance(config.address);
 		getTotalEth( (err,res)=>$('.total-eth').html(bigNumberToStrAndDivide(res)) )
+
 	</script>
 
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 </head>
-<body>
-    <div class="jumbotron" style="background-color: #0066E6" >
-      <div class="container" >
-        <font color="white"><h1 >Welcome to Ethlend ICO</h1></font>
-        <font color="white"><p>Please find all the details for the upcoming initial coin offering</p></font>
+<style type="text/css">
+	
+body{
+	/*text-align: center;*/
+/*	background: #00ECB9;
+  font-family: sans-serif;
+  font-weight: 100;*/
+}
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  margin: 40px 0px 20px;
+}
+
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px;
+}
+
+#clockdiv > div{
+	padding: 10px;
+	border-radius: 3px;
+	background: #00BF96;
+	display: inline-block;
+}
+
+#clockdiv div > span{
+	padding: 15px;
+	border-radius: 3px;
+	background: #00816A;
+	display: inline-block;
+}
+
+.smalltext{
+	padding-top: 5px;
+	font-size: 16px;
+}
+
+a {color: white;}
+a:hover {color: white;}
+
+</style> 
+
+<body >
+
+    <div style="background-color: #1B43CF; text-align:left;" >
+      <div class="container" style="display:flex; align-items:center;">
+      	
+      	<img src="https://about.ethlend.io/wp-content/uploads/2017/06/ETHLend_logo.svg" style="max-width:15%; max-height:15%; margin: 5px 5px 5px 5px;"">
+        
+        <div style="display: table; margin-right: auto; ">
+        
+        		<a  href="http://www.EthLend.io" style="margin: 10px 10px 10px 10px;">About ETHLend</a>
+        	
+        	<!-- <font color="white" ><p style="margin: 10px 10px 10px 10px;">About ETHLend</p></font> -->
+        </div>
+
+        <div style="display: flex;margin-left: auto;">
+        	<font color="white" ><a href="https://app.ethlend.io/main/1" style="margin: 10px 10px 10px 10px; border: 2px solid white; border-radius: 5px; padding: 10px;">Test our DAPP</a></font>
+        	<font color="white" ><a href="https://github.com/ETHLend/Documentation/blob/master/ETHLendWhitePaper.md" style="margin: 10px 10px 10px 10px; padding: 10px;">White Paper</a></font>
+        	<font color="white" ><a href="https://app.ethlend.io/faq" style="margin: 10px 10px 10px 10px; padding: 10px;">FAQ</a></font>
+        </div>
       </div>
     </div>
+
+    <div class="jumbotron" style="background-color: #0066E6; text-align:center;" >
+      <div class="container" >
+        <font color="white"><h1 >Welcome to ETHLend Lend Token Sale</h1></font>
+        <font color="white"><h2> Decentralizing Lending</h2></font>
+      </div>
+    </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+    			<h3> LEND Token Price</h3>
+    			<div>
+				<p>Pre-sale: Token sale price 1ETH = 30,000 LEND
+				(Price includes 20% bouns tokens for all pre-sale participants)</p>
+				<p> Minimum amount to participate: 1ETH</p>
+				<p> Token Sale: </p> 
+				<p> First 200 000 000 LEND: 27 500 LEND = 1ETH (price includes 10% bonus tokens)</p>
+
+				<p> Next 100 000 000 LEND: 26 250 LEND = 1ETH (price includes 5% bonus tokens)</p>
+    			<p> Remaining LEND = 1ETH </p>
+    			
+    			</div>
+            </div>
+            <div class="col-md-6">
+            	<h3>Pre-sale</h3>
+            	<p>The pre-sale starts on the 25th of September, 2017, 12AM GMT (1PM London time)</p>
+            	<div>
+            	<div id="clockdiv">
+            	  <div>
+            	    <span class="days"></span>
+            	    <div class="smalltext">Days</div>
+            	  </div>
+            	  <div>
+            	    <span class="hours"></span>
+            	    <div class="smalltext">Hours</div>
+            	  </div>
+            	  <div>
+            	    <span class="minutes"></span>
+            	    <div class="smalltext">Minutes</div>
+            	  </div>
+            	  <div>
+            	    <span class="seconds"></span>
+            	    <div class="smalltext">Seconds</div>
+            	  </div>
+            	</div>
+            	</div>
+           </div>
+          </div>
+          </div>
+
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6">
+          			<h3> Information</h3>
+          			<div>
+          			<p>Once the pre-sale or token sale starts, we will show the address where you need to send Ether to receive LEND.</p>
+          			<p>The last 8-digits of our crowdsales address: </p>
+          			<p>0x---------------------------------</p>
+          			<p>Please use gas limit of 300,000</p>
+          			<p>All unused gas shall be returned</p>
+          			<p>The smart contract will mint your LEND once ETH is received and sends the LEND back to your address once created</p>
+          			</div>
+                  </div>
+                  <div class="col-md-6">
+                  	<h3>Contribute with Ethereum</h3>
+                 </div>
+                </div>
+                </div>
+
+
+
+
+              <div class="container">
+                <div class="row">
+
+                  <div class="col-md-12">
+                  	<h3> Prohibited Actions</h3>
+                  	<p>Do not send ether from exchanges (these include Coinbase, Poloniex, Kraken or any other)</p>
+                  	<p>Do not use JAXX</p>
+                  	<p>Do not use Multi-signature wallets</p>
+                  	<p>We will now allow anyone from U.S. to participate in our ICO. To provide the right information will be the responsibility of the investor.</p>
+                 </div>
+                </div>
+                </div>
+
+
+<!-- Original function in the html -->
 
     <div class="container">
       <div class="row">
@@ -104,12 +256,59 @@
 		</h4>
        </div>
       </div>
+
+      <div style="background-color: white; text-align:center; margin: 15px 15px 15px 15px" >
+      <p>2017@ETHLend | Decentrailizing Lending </p>
+      </div>
+
 </body>
 
 <script type="text/javascript">
 	$('.check-balance').click(function(){
 		getBalance( $('.input-balance').val(), (err,res)=>{$('.token-balance').html(bigNumberToStrAndDivide(res))})
 	});
+
+	function getTimeRemaining(endtime) {
+	  var t = Date.parse(endtime) - Date.parse(new Date());
+	  var seconds = Math.floor((t / 1000) % 60);
+	  var minutes = Math.floor((t / 1000 / 60) % 60);
+	  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+	  var days = Math.floor(t / (1000 * 60 * 60 * 24));
+	  return {
+	    'total': t,
+	    'days': days,
+	    'hours': hours,
+	    'minutes': minutes,
+	    'seconds': seconds
+	  };
+	}
+
+	function initializeClock(id, endtime) {
+	  var clock = document.getElementById(id);
+	  var daysSpan = clock.querySelector('.days');
+	  var hoursSpan = clock.querySelector('.hours');
+	  var minutesSpan = clock.querySelector('.minutes');
+	  var secondsSpan = clock.querySelector('.seconds');
+
+	  function updateClock() {
+	    var t = getTimeRemaining(endtime);
+
+	    daysSpan.innerHTML = t.days;
+	    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+	    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+	    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+	    if (t.total <= 0) {
+	      clearInterval(timeinterval);
+	    }
+	  }
+
+	  updateClock();
+	  var timeinterval = setInterval(updateClock, 1000);
+	}
+
+	var deadline = new Date(Date.parse("September 25, 2017"));
+	initializeClock('clockdiv', deadline);
 </script>
 
 </html>
