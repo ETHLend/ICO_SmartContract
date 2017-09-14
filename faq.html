@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ETHLend LEND Token Sale FAQ</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+</head>
+<style type="text/css">
+	
+body{
+	/*text-align: center;*/
+/*	background: #00ECB9;
+  font-family: sans-serif;
+  font-weight: 100;*/
+  font-weight: 600; font-family: 'Lato', sans-serif;
+}
+
+h1{
+  color: #396;
+  font-weight: 800;
+  font-family: 'Lato', sans-serif;
+  margin: 40px 0px 20px;
+}
+
+h2 {
+  font-weight: 800;
+  font-family: 'Lato', sans-serif;
+}
+
+h3 {
+  font-weight: 800;
+  font-family: 'Lato', sans-serif;
+}
+
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px;
+}
+
+#clockdiv > div{
+	padding: 25px;
+	border-radius: 3px;
+	background: #1795c9;
+	display: inline-block;
+}
+
+#clockdiv div > span{
+	padding: 20px;
+	border-radius: 3px;
+	background: #51a5c8;
+	display: inline-block;
+}
+
+.smalltext{
+	padding-top: 5px;
+	font-size: 16px;
+}
+
+a {color: white;}
+a:hover {color: white;}
+
+</style> 
+
+<body >
+
+    <div style="background-color: #1795c9; text-align:left; font-weight: 800; font-family: 'Lato', sans-serif;" >
+      <div class="container" style="display:flex; align-items:center;">
+      	
+      	<img src="https://about.ethlend.io/wp-content/uploads/2017/06/ETHLend_logo.svg" style="max-width:15%; max-height:15%; margin: 5px 5px 5px 5px;"">
+        
+        <div style="display: table; margin-right: auto; ">
+        
+        		<a  href="https://about.ethlend.io/" style="margin: 10px 10px 10px 10px;">About ETHLend</a>
+        	
+        	<!-- <font color="white" ><p style="margin: 10px 10px 10px 10px;">About ETHLend</p></font> -->
+        </div>
+
+        <div style="display: flex;margin-left: auto; font-weight: 800; font-family: 'Lato', sans-serif;">
+        	<font color="white" ><a href="https://app.ethlend.io/main/1" style="margin: 10px 10px 10px 10px; border: 2px solid white; border-radius: 5px; padding: 10px;">Test our DAPP</a></font>
+        	<font color="white" ><a href="https://github.com/ETHLend/Documentation/blob/master/ETHLendWhitePaper.md" style="margin: 10px 10px 10px 10px; padding: 10px;">White Paper</a></font>
+        	<font color="white" ><a href="https://app.ethlend.io/faq" style="margin: 10px 10px 10px 10px; padding: 10px;">FAQ</a></font>
+			<font color="white" ><a href="https://t.me/ETHLend" style="margin: 10px 10px 10px 10px; padding: 10px;">Telegram</a></font>
+        </div>
+      </div>
+    </div>
+
+    <div class="jumbotron" style="background-color: #1795c9; text-align:center; font-weight: 800; font-family: 'Lato', sans-serif;" >
+      <div class="container" >
+        <font color="white"><h1>Welcome to LEND Token Pre-Sale</h1></font>
+        <font color="white"><h2>Decentralizing Lending</h2></font>
+      </div>
+    </div>
+
+        <div class="container">
+          <ul>
+  <li>Q1</li>
+  <p>Answer</p>
+  <li>Q2</li>
+  <p>Answer</p>
+  <li>Q3</li>
+  <p>Answer</p>
+</ul>
+                </div>
+
+      <div style="background-color: #1795c9; color: #FFF; text-align:center; padding: 25px; margin: 35px 15px 0px 0px; font-weight: 800; font-family: 'Lato', sans-serif; height: 150px; width: 100%" >
+      <p>2017 - ETHLend.io | Decentralizing Lending </p>
+      </div>
+
+</body>
+
+<script type="text/javascript">
+	$('.check-balance').click(function(){
+		getBalance( $('.input-balance').val(), (err,res)=>{$('.token-balance').html(bigNumberToStrAndDivide(res))})
+	});
+
+	function getTimeRemaining(endtime) {
+	  var t = Date.parse(endtime) - Date.parse(new Date());
+	  var seconds = Math.floor((t / 1000) % 60);
+	  var minutes = Math.floor((t / 1000 / 60) % 60);
+	  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+	  var days = Math.floor(t / (1000 * 60 * 60 * 24));
+	  return {
+	    'total': t,
+	    'days': days,
+	    'hours': hours,
+	    'minutes': minutes,
+	    'seconds': seconds
+	  };
+	}
+
+	function initializeClock(id, endtime) {
+	  var clock = document.getElementById(id);
+	  var daysSpan = clock.querySelector('.days');
+	  var hoursSpan = clock.querySelector('.hours');
+	  var minutesSpan = clock.querySelector('.minutes');
+	  var secondsSpan = clock.querySelector('.seconds');
+
+	  function updateClock() {
+	    var t = getTimeRemaining(endtime);
+
+	    daysSpan.innerHTML = t.days;
+	    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+	    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+	    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+	    if (t.total <= 0) {
+	      clearInterval(timeinterval);
+	    }
+	  }
+
+	  updateClock();
+	  var timeinterval = setInterval(updateClock, 1000);
+	}
+
+	var deadline = new Date(Date.parse("September 25, 2017"));
+	initializeClock('clockdiv', deadline);
+</script>
+
+</html>
