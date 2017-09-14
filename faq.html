@@ -80,9 +80,10 @@ a:hover {color: white;}
         </div>
 
         <div style="display: flex;margin-left: auto; font-weight: 800; font-family: 'Lato', sans-serif;">
-        	<font color="white" ><a href="https://app.ethlend.io/main/1" style="margin: 10px 10px 10px 10px; border: 2px solid white; border-radius: 5px; padding: 10px;">Test our DAPP</a></font>
+        	<font color="white" ><a href="token_sale.html" style="margin: 10px 10px 10px 10px; padding: 10px;">Token Sale</a></font>
+			<font color="white" ><a href="https://app.ethlend.io/main/1" style="margin: 10px 10px 10px 10px; border: 2px solid white; border-radius: 5px; padding: 10px;">Test our DAPP</a></font>
         	<font color="white" ><a href="https://github.com/ETHLend/Documentation/blob/master/ETHLendWhitePaper.md" style="margin: 10px 10px 10px 10px; padding: 10px;">White Paper</a></font>
-        	<font color="white" ><a href="https://app.ethlend.io/faq" style="margin: 10px 10px 10px 10px; padding: 10px;">FAQ</a></font>
+        	<font color="white" ><a href="faq.html" style="margin: 10px 10px 10px 10px; padding: 10px;">FAQ</a></font>
 			<font color="white" ><a href="https://t.me/ETHLend" style="margin: 10px 10px 10px 10px; padding: 10px;">Telegram</a></font>
         </div>
       </div>
@@ -96,8 +97,24 @@ a:hover {color: white;}
     </div>
 
         <div class="container">
-          <ul>
+          <ul style="list-style-type:none">
+		  <h1 style="color: black">ETHLend LEND Token Sale FAQ</h1>
+		  <h2>General</h2>
   <li>Q1</li>
+  <p>Answer</p>
+  <li>Q2</li>
+  <p>Answer</p>
+  <li>Q3</li>
+  <p>Answer</p>
+  <h2>Token Sale</h2>
+    <li>Q1</li>
+  <p>Answer</p>
+  <li>Q2</li>
+  <p>Answer</p>
+  <li>Q3</li>
+  <p>Answer</p>
+  <h2>Decentralized Application (DAPP)</h2>
+    <li>Q1</li>
   <p>Answer</p>
   <li>Q2</li>
   <p>Answer</p>
@@ -107,57 +124,8 @@ a:hover {color: white;}
                 </div>
 
       <div style="background-color: #1795c9; color: #FFF; text-align:center; padding: 25px; margin: 35px 15px 0px 0px; font-weight: 800; font-family: 'Lato', sans-serif; height: 150px; width: 100%" >
-      <p>2017 - ETHLend.io | Decentralizing Lending </p>
+      <p>2017 - ETHLend.io | Decentralizing Lending - All Rights Reserved - Block Research OÜ - Reg: 14331108 -  Tartu mnt 80, Kesklinna linnaosa, Tallinn, Harju maakond, 10112</p>
       </div>
 
 </body>
-
-<script type="text/javascript">
-	$('.check-balance').click(function(){
-		getBalance( $('.input-balance').val(), (err,res)=>{$('.token-balance').html(bigNumberToStrAndDivide(res))})
-	});
-
-	function getTimeRemaining(endtime) {
-	  var t = Date.parse(endtime) - Date.parse(new Date());
-	  var seconds = Math.floor((t / 1000) % 60);
-	  var minutes = Math.floor((t / 1000 / 60) % 60);
-	  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-	  var days = Math.floor(t / (1000 * 60 * 60 * 24));
-	  return {
-	    'total': t,
-	    'days': days,
-	    'hours': hours,
-	    'minutes': minutes,
-	    'seconds': seconds
-	  };
-	}
-
-	function initializeClock(id, endtime) {
-	  var clock = document.getElementById(id);
-	  var daysSpan = clock.querySelector('.days');
-	  var hoursSpan = clock.querySelector('.hours');
-	  var minutesSpan = clock.querySelector('.minutes');
-	  var secondsSpan = clock.querySelector('.seconds');
-
-	  function updateClock() {
-	    var t = getTimeRemaining(endtime);
-
-	    daysSpan.innerHTML = t.days;
-	    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-	    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-	    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-	    if (t.total <= 0) {
-	      clearInterval(timeinterval);
-	    }
-	  }
-
-	  updateClock();
-	  var timeinterval = setInterval(updateClock, 1000);
-	}
-
-	var deadline = new Date(Date.parse("September 25, 2017"));
-	initializeClock('clockdiv', deadline);
-</script>
-
 </html>
