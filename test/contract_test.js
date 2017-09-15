@@ -9,6 +9,8 @@ var BigNumber = require('bignumber.js');
 //assert.notEqual(typeof(process.env.ETH_NODE),'undefined');
 var web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETH_NODE));
 
+var ONE_ETH = 1000000000000000000;
+
 var accounts;
 
 var creator;
@@ -223,7 +225,7 @@ describe('Contracts 0 - Deploy', function() {
           done();
      });
 
-     it('should move state',function(done){
+     it('should move state to PresaleRunning',function(done){
           contract.setState(
                2,
                {
@@ -254,13 +256,13 @@ describe('Contracts 0 - Deploy', function() {
           done();
      });
 
-     it('should get updated state',function(done){
+     it('should get updated state, PresaleRunning',function(done){
           var state = contract.currentState();
           assert.equal(state,2);
           done();
      })
 
-     it('should not buy tokens if less than min',function(done){
+     it('should not buy tokens if less than min 1 ETH. Sending 0.2 ETH',function(done){
           // 0.2 ETH
           var amount = 200000000000000000;
 
@@ -277,7 +279,7 @@ describe('Contracts 0 - Deploy', function() {
           );
      });
 
-     it('should not buy tokens if less than min 2',function(done){
+     it('should not buy tokens if less than min 1 ETH, Sending 0.9 ETH',function(done){
           // 0.9 ETH
           var amount = 900000000000000000;
           web3.eth.sendTransaction(
@@ -293,7 +295,7 @@ describe('Contracts 0 - Deploy', function() {
           );
      });
 
-     it('should buy tokens',function(done){
+     it('should buy tokens, Sending 1 ETH',function(done){
           // 1 ETH
           var amount = 1000000000000000000;
 
@@ -327,7 +329,7 @@ describe('Contracts 0 - Deploy', function() {
      });
 
 // pause
-     it('should pause',function(done){
+     it('should pause. Changing state to Pause',function(done){
           contract.setState(
                1,
                {
@@ -378,7 +380,7 @@ describe('Contracts 0 - Deploy', function() {
           );
      });
 
-     it('should un-pause',function(done){
+     it('should un-pause, Setting state PresaleRunning',function(done){
           contract.setState(
                2,
                {
@@ -448,6 +450,36 @@ describe('Contracts 0 - Deploy', function() {
 
           done();
      });     
+
+
+     it('should withdraw Ether to escrow account.',function(done){
+
+          var contractEthBal= web3.eth.getBalance(contractAddress);
+          assert.equal(contractEthBal, ONE_ETH);
+
+          contract.withdrawEther(               
+               {
+                    from: creator,               
+                    gas: 2900000 
+               },function(err,result){
+                    assert.equal(err,null);
+
+                    web3.eth.getTransactionReceipt(result, function(err, r2){
+                         assert.equal(err, null);
+
+                         //escrow ETH balance increased by 1 ETH
+                         var escrowEthBal= web3.eth.getBalance(escrow);                         
+                         assert.equal(escrowEthBal, parseInt(ONE_ETH) + parseInt(initialBalanceEscrow));
+
+                         //contract ETH balance = 0
+                         var contractEthBal= web3.eth.getBalance(contractAddress);
+                         assert.equal(contractEthBal, 0);
+                         done();
+                    });
+               }
+          );
+     })
+
 
      it('should get price',function(done){
           var price = contract.getPrice();
@@ -534,6 +566,41 @@ describe('Contracts 0 - Deploy', function() {
           );
      })
 
+
+     //Transfer LEND tokens not enabled
+     it('should not be able to transfer LEND tokens',function(done){
+          var state = contract.currentState();
+          assert.equal(state,4);
+
+          var lendBal = contract.balanceOf(buyer);
+          assert.equal(lendBal, 30000 * ONE_ETH);
+
+          lendBal = contract.balanceOf(buyer2);
+          assert.equal(lendBal, 41250 * ONE_ETH);
+
+          //Try to Transfer 100 LEND tokens
+          contract.transfer(
+               buyer2, 100 * ONE_ETH,
+               {
+                    from: buyer,
+                    to: contractAddress,
+                    gas: 2900000 
+               },function(err,result){
+                    assert.notEqual(err, null);
+
+
+                    var lendBal = contract.balanceOf(buyer);
+                    assert.equal(lendBal, 30000 * ONE_ETH);
+
+                    lendBal = contract.balanceOf(buyer2);
+                    assert.equal(lendBal, 41250 * ONE_ETH);
+                         
+                    done();
+                    
+               }
+          );
+     })
+
      it('should move to ICOFinished state',function(done){
           var state = contract.currentState();
           assert.equal(state,4);
@@ -589,6 +656,43 @@ describe('Contracts 0 - Deploy', function() {
                }
           );
      })
+
+     //Transfer 100 LEND tokens
+     it('should transfer LEND tokens from buyer to buyer2',function(done){
+          var state = contract.currentState();
+          assert.equal(state,5);
+
+          var lendBal = contract.balanceOf(buyer);
+          assert.equal(lendBal, 30000 * ONE_ETH);
+
+          lendBal = contract.balanceOf(buyer2);
+          assert.equal(lendBal, 41250 * ONE_ETH);
+
+          //Transfer 100 LEND tokens
+          contract.transfer(
+               buyer2, 100 * ONE_ETH,
+               {
+                    from: buyer,
+                    to: contractAddress,
+                    gas: 2900000 
+               },function(err,result){
+                    assert.equal(err,null);
+
+                    web3.eth.getTransactionReceipt(result, function(err, r2){
+                         assert.equal(err, null);
+
+                         var lendBal = contract.balanceOf(buyer);
+                         assert.equal(lendBal, 29900 * ONE_ETH);
+
+                         lendBal = contract.balanceOf(buyer2);
+                         assert.equal(lendBal, 41350 * ONE_ETH);
+
+                         done();
+                    });
+               }
+          );
+     })
+
      ;
 });
 
