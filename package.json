@@ -23,7 +23,6 @@
     "express": "^4.13.4",
     "express-jwt": "^3.3.0",
     "facebook-node-sdk": "^0.2.0",
-    "foobar": "^1.1.0",
     "http": "0.0.0",
     "iconv": "^2.1.11",
     "jsonwebtoken": "^5.7.0",
