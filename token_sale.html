@@ -14,7 +14,7 @@
 			
 		var config            = {};
 		config.node           = 'https://kovan.infura.io';
-		config.address 	  = '0x7ea65f4Df33d5da5980502f0973A695Ffe6c58F5';
+		config.address 	  = '0x11c5b429abf877cfd16eb1b2460f6b8e58f999ea';
 		config.projectAbi     = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"teamTokenBonus","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"TOTAL_SOLD_TOKEN_SUPPLY_LIMIT","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"currentState","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"PRESALE_MAX_ETH","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"presaleSoldTokens","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"tokenManager","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getCurrentState","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"icoSoldTokens","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_nextState","type":"uint8"}],"name":"setState","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"PRESALE_PRICE","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"ICO_PRICE1","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"withdrawEther","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"DEVELOPERS_BONUS","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_mgr","type":"address"}],"name":"setTokenManager","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"TOTAL_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPrice","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getTokenManager","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_buyer","type":"address"}],"name":"buyTokensPresale","outputs":[],"payable":true,"type":"function"},{"constant":true,"inputs":[],"name":"getTotalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSoldTokens","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"escrow","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"ICO_PRICE3","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"PRESALE_TOKEN_SUPPLY_LIMIT","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_buyer","type":"address"}],"name":"buyTokens","outputs":[],"payable":true,"type":"function"},{"constant":true,"inputs":[],"name":"ICO_PRICE2","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_buyer","type":"address"}],"name":"buyTokensICO","outputs":[],"payable":true,"type":"function"},{"inputs":[{"name":"_tokenManager","type":"address"},{"name":"_escrow","type":"address"},{"name":"_teamTokenBonus","type":"address"}],"payable":false,"type":"constructor"},{"payable":true,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"LogBuy","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"LogBurn","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newState","type":"uint8"}],"name":"LogStateSwitch","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]
           
 
@@ -232,14 +232,15 @@ a:hover {color: white;}
 						<h4>LEND minted (inc. Developer Fund): 
 							<small class="tokens-sold"></small>
 						</h4>
-						<h4>LEND available on Pre-Sale: 
-							<small class="tokens-presale-total"></small>
+						<h4>Total LEND for sale on Pre-Sale: 
+							<small class="tokens-presale-total"></small> LEND
 						</h4>
-						<h4>Total LEND (token sale + pre-sale) on sale: 
+						<h4>Total LEND for sale:
 							<small class="tokens-ico-total"></small>
-						</h4>
-						<h4>Current Price: 
-							<small class="token-price" ></small>
+						LEND</h4>
+						
+						<h4>Current Price: 1 ETH = 
+							<small class="token-price" ></small> LEND
 						</h4>
 						<h4>Total ETH Contributed: 
 							<small class="total-eth" ></small>
@@ -262,7 +263,7 @@ a:hover {color: white;}
                 </div>
 
       <div style="background-color: #1795c9; color: #FFF; text-align:center; padding: 25px; margin: 35px 15px 0px 0px; font-weight: 800; font-family: 'Lato', sans-serif; height: 150px; width: 100%" >
-      <p>2017 - ETHLend.io | Decentralizing Lending - All Rights Reserved - Block Research OÜ - Reg: 14331108 -  Tartu mnt 80, Kesklinna linnaosa, Tallinn, Harju maakond, 10112</p>
+      <p>2017 - ETHLend.io | Decentralizing Lending - All Rights Reserved - Block Research OU - Reg: 14331108 -  Tartu mnt 80, Kesklinna linnaosa, Tallinn, Harju maakond, 10112</p>
       </div>
 
 </body>
